@@ -7,10 +7,10 @@ import re
 import json
 
 # Telegram Bot API Token (replace with your actual token)
-BOT_TOKEN = "your_random_token_here"  # Placeholder token
+BOT_TOKEN = "your_api_token_here"  # Placeholder token
 
 # Your Amazon Referral Tag
-REFERRAL_TAG = "lanjpoiwer123"
+REFERRAL_TAG = "your_referral_tag"
 
 def shorten_url(url):
     """Shortens a URL using the TinyURL API."""

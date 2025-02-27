@@ -21,7 +21,7 @@ The Amazon Referral Rewriter is a Python-based Telegram bot that automatically m
 1.  **Clone the repository:**
 
     ```bash
-    git clone [repository_url]
+    git clone https://github.com/hal9ooo/RefRewiter.git
     cd amazon-referral-rewriter
     ```
 
@@ -64,7 +64,7 @@ The Amazon Referral Rewriter is a Python-based Telegram bot that automatically m
 
     *   Open the `bot.py` file in a text editor.
     *   Replace `"your_random_token_here"` with your actual Telegram Bot API token.
-    *   Ensure that the `REFERRAL_TAG` variable is set to your Amazon referral tag (default: `"lanjpoiwer123"`).
+    *   Ensure that the `REFERRAL_TAG` variable is set to your Amazon referral tag 
 
 ## Usage
 
@@ -111,4 +111,4 @@ The bot includes basic error handling to catch potential issues like invalid lin
 
 ## License
 
-[Choose a license, e.g., MIT License]
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

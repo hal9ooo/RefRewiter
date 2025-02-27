@@ -5,12 +5,17 @@ from bs4 import BeautifulSoup
 import os
 import re
 import json
+import sqlite3
+from datetime import datetime
 
 # Telegram Bot API Token (replace with your actual token)
 BOT_TOKEN = "your_api_token_here"  # Placeholder token
 
 # Your Amazon Referral Tag
 REFERRAL_TAG = "your_referral_tag"
+
+# Database file
+DATABASE_FILE = "amazon_links.db"
 
 def shorten_url(url):
     """Shortens a URL using the TinyURL API."""
@@ -30,8 +35,6 @@ def modify_amazon_link(link):
     try:
         response = requests.get(link)
         response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
-        soup = BeautifulSoup(response.content, 'html.parser')
-        
         # Find the original URL (handle different redirect methods)
         original_url = response.url
         
@@ -46,6 +49,62 @@ def modify_amazon_link(link):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
+
+def extract_asin(url):
+    """Extracts the ASIN from an Amazon URL."""
+    asin_pattern = r"/dp/([A-Z0-9]{10})|/gp/product/([A-Z0-9]{10})"
+    match = re.search(asin_pattern, url)
+    if match:
+        return match.group(1) or match.group(2)
+    return None
+
+def store_link_data(asin, original_url, modified_url):
+    """Stores the link data in the SQLite database, refreshing if older than 15 days."""
+    conn = None
+    try:
+        conn = sqlite3.connect(DATABASE_FILE)
+        cursor = conn.cursor()
+
+        # Create table if it doesn't exist
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS amazon_links (
+                asin TEXT PRIMARY KEY,
+                date TEXT,
+                original_url TEXT,
+                modified_url TEXT
+            )
+        """)
+
+        # Check if the ASIN exists
+        cursor.execute("SELECT date FROM amazon_links WHERE asin = ?", (asin,))
+        result = cursor.fetchone()
+
+        if result:
+            # ASIN exists, check if it's older than 15 days
+            last_update_date = datetime.fromisoformat(result[0])
+            time_difference = datetime.now() - last_update_date
+            if time_difference.days > 15:
+                # Update the date
+                cursor.execute("UPDATE amazon_links SET date = ?, original_url = ?, modified_url = ? WHERE asin = ?",
+                               (datetime.now().isoformat(), original_url, modified_url, asin))
+                print(f"ASIN {asin} updated in the database.")
+            else:
+                print(f"ASIN {asin} is not older than 15 days, skipping update.")
+                conn.close()
+                return
+
+        else:
+            # ASIN doesn't exist, insert new data
+            cursor.execute("INSERT INTO amazon_links (asin, date, original_url, modified_url) VALUES (?, ?, ?, ?)",
+                           (asin, datetime.now().isoformat(), original_url, modified_url))
+            print(f"ASIN {asin} added to the database.")
+
+        conn.commit()
+    except sqlite3.Error as e:
+        print(f"Database error: {e}")
+    finally:
+        if conn:
+            conn.close()
 
 
 def handle_message(update, context):
@@ -66,6 +125,14 @@ def handle_message(update, context):
         if modified_link:
             shortened_link = shorten_url(modified_link)  # Shorten the modified link
             modified_text = modified_text.replace(link, shortened_link)  # Replace the original link with the shortened link
+            
+            # Extract ASIN and store data
+            asin = extract_asin(modified_link)
+            if asin:
+                store_link_data(asin, link, modified_link)
+            else:
+                print(f"Could not extract ASIN from: {modified_link}")
+
         else:
             print(f"Could not process the Amazon link: {link}") # Log the error
 

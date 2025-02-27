@@ -51,6 +51,27 @@ The Amazon Referral Rewriter is a Python-based Telegram bot that automatically m
     pip install requests beautifulsoup4 python-telegram-bot
     ```
 
+    If you encounter issues with `sqlite3`, it might not be included in your Python installation. You can try installing it separately:
+
+    *   On Debian/Ubuntu:
+
+        ```bash
+        sudo apt-get install libsqlite3-dev
+        ```
+
+    *   On macOS (using Homebrew):
+
+        ```bash
+        brew install sqlite
+        ```
+
+    After installing the SQLite development libraries, you might need to reinstall the `sqlite3` Python module:
+
+    ```bash
+    pip uninstall sqlite3
+    pip install sqlite3
+    ```
+
 ## Configuration
 
 1.  **Obtain a Telegram Bot API token:**
@@ -108,6 +129,16 @@ The bot includes basic error handling to catch potential issues like invalid lin
 *   **Logging:** Implement more comprehensive logging to track the bot's activity and errors.
 *   **Customizable Shortener:** Allow the user to choose a different link shortener service.
 *   **Asynchronous Operations:** Use asynchronous operations to improve the bot's performance.
+*   **ASIN Refresh:** Refreshes the ASIN entry in the database if it was last updated more than 15 days ago.
+
+## Database
+
+The bot uses an SQLite database (`amazon_links.db`) to store the history of processed Amazon links. The database table has the following schema:
+
+*   `asin` (TEXT PRIMARY KEY): The Amazon Standard Identification Number.
+*   `date` (TEXT): The date the link was processed.
+*   `original_url` (TEXT): The original Amazon link.
+*   `modified_url` (TEXT): The modified Amazon link with the updated referral tag and shortened URL.
 
 ## License
 

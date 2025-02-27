@@ -122,6 +122,18 @@ Check out this awesome product on Amazon! http://tinyurl.com/xxxx
 
 The bot includes basic error handling to catch potential issues like invalid links or network errors. If an error occurs, it will be logged to the console.
 
+## Database
+
+The bot uses an SQLite database (`amazon_links.db`) to store and manage the history of processed Amazon links. The database provides the following functionalities:
+
+*   **Deduplication:** The `asin` field is defined as the primary key, ensuring that each Amazon product is only stored once in the database, preventing duplicate entries.
+*   **Data Storage:** The database stores the following information for each Amazon link:
+    *   `asin` (TEXT PRIMARY KEY): The Amazon Standard Identification Number.
+    *   `date` (TEXT): The date the link was processed.
+    *   `original_url` (TEXT): The original Amazon link.
+    *   `modified_url` (TEXT): The modified Amazon link with the updated referral tag and shortened URL.
+*   **Refresh Mechanism:** If an ASIN is already present in the database and its last update date is older than 15 days, the bot will update the `date`, `original_url`, and `modified_url` fields with the current values. This ensures that the database contains the most recent information for each Amazon product.
+
 ## Potential Improvements
 
 *   **More Robust Link Detection:** Improve the link detection regex to handle a wider variety of Amazon link formats.
@@ -131,14 +143,7 @@ The bot includes basic error handling to catch potential issues like invalid lin
 *   **Asynchronous Operations:** Use asynchronous operations to improve the bot's performance.
 *   **ASIN Refresh:** Refreshes the ASIN entry in the database if it was last updated more than 15 days ago.
 
-## Database
 
-The bot uses an SQLite database (`amazon_links.db`) to store the history of processed Amazon links. The database table has the following schema:
-
-*   `asin` (TEXT PRIMARY KEY): The Amazon Standard Identification Number.
-*   `date` (TEXT): The date the link was processed.
-*   `original_url` (TEXT): The original Amazon link.
-*   `modified_url` (TEXT): The modified Amazon link with the updated referral tag and shortened URL.
 
 ## License
 

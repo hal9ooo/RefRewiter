@@ -10,10 +10,10 @@ import sqlite3
 from datetime import datetime
 
 # Telegram Bot API Token (replace with your actual token)
-BOT_TOKEN = "7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE"  # Placeholder token
+BOT_TOKEN = "YOUR_BOT_TOKEN"  # Placeholder token
 
 # Your Amazon Referral Tag
-REFERRAL_TAG = "homepetsoff07-21"
+REFERRAL_TAG = "YOUR_REFERRAL"
 
 # Database file
 DATABASE_FILE = "amazon_links.db"

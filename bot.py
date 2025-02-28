@@ -138,7 +138,7 @@ async def process_message(bot: Bot, text: str, chat_id: int):
     print(f"Received message: {text} from chat ID: {chat_id}")
 
     # Regex to find Amazon links (shortened and non-shortened)
-    amazon_link_pattern = r"https?:\/\/(?:amzn\.to\/[a-zA-Z0-9]+|(?:www\.)?amazon\.(?:com|co\.uk|de|fr|es|it)\/.*\/dp\/[A-Z0-9]{10}.*)"
+    amazon_link_pattern = r"https?:\/\/(?:amzn\.to\/[a-zA-Z0-9]+|(?:www\.)?amazon\.(?:com|co\.uk|de|fr|es|it)\/?.*\/dp\/[A-Z0-9]{10}.*)"
     
     amazon_links = re.findall(amazon_link_pattern, text)
     logging.info(f"Found Amazon links: {amazon_links}")
@@ -189,15 +189,19 @@ async def main():
                 print(f"Processing update with ID: {update.update_id}")
                 offset = update.update_id + 1
                 
-                # Process only text messages
-                if update.message and update.message.text:
-                    await process_message(
-                        bot,
-                        update.message.text,
-                        update.message.chat_id
-                    )
+                # Process messages
+                if update.message:
+                    message_text = update.message.text or update.message.caption
+                    if message_text:
+                        await process_message(
+                            bot,
+                            message_text,
+                            update.message.chat_id
+                        )
+                    else:
+                        print("Received message without text, skipping...")
                 else:
-                    print("Received non-text message, skipping...")
+                    print("Received update without message, skipping...")
             # Small delay to prevent high CPU usage
             await asyncio.sleep(1)
     except KeyboardInterrupt:

@@ -1,0 +1,117 @@
+2025-02-28 11:51:11,641 - INFO - HTTP Request: POST https://api.telegram.org/bot7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE/getMe "HTTP/1.1 200 OK"
+2025-02-28 11:51:41,793 - INFO - HTTP Request: POST https://api.telegram.org/bot7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE/getUpdates "HTTP/1.1 200 OK"
+2025-02-28 11:52:12,842 - INFO - HTTP Request: POST https://api.telegram.org/bot7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE/getUpdates "HTTP/1.1 200 OK"
+2025-02-28 11:52:43,882 - INFO - HTTP Request: POST https://api.telegram.org/bot7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE/getUpdates "HTTP/1.1 200 OK"
+2025-02-28 11:53:14,920 - INFO - HTTP Request: POST https://api.telegram.org/bot7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE/getUpdates "HTTP/1.1 200 OK"
+2025-02-28 11:53:45,962 - INFO - HTTP Request: POST https://api.telegram.org/bot7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE/getUpdates "HTTP/1.1 200 OK"
+2025-02-28 11:54:17,002 - INFO - HTTP Request: POST https://api.telegram.org/bot7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE/getUpdates "HTTP/1.1 200 OK"
+2025-02-28 11:54:48,042 - INFO - HTTP Request: POST https://api.telegram.org/bot7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE/getUpdates "HTTP/1.1 200 OK"
+2025-02-28 11:55:19,087 - INFO - HTTP Request: POST https://api.telegram.org/bot7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE/getUpdates "HTTP/1.1 200 OK"
+2025-02-28 11:55:50,131 - INFO - HTTP Request: POST https://api.telegram.org/bot7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE/getUpdates "HTTP/1.1 200 OK"
+2025-02-28 11:56:09,984 - INFO - HTTP Request: POST https://api.telegram.org/bot7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE/getUpdates "HTTP/1.1 200 OK"
+2025-02-28 11:56:09,991 - INFO - Received message: https://www.amazon.it/dp/B0DGLXK3B9?tag=tomsguides-21&linkCode=ogi&th=1&psc=1&ascsubtag=12154_migliori-stampanti-economiche-getto-inchiostro from chat ID: 10792947
+2025-02-28 11:56:09,991 - INFO - Found Amazon links: []
+Starting bot...
+Bot started as @AcquistiFurbi_bot
+Received updates: ()
+Received updates: ()
+Received updates: ()
+Received updates: ()
+Received updates: ()
+Received updates: ()
+Received updates: ()
+Received updates: ()
+Received updates: ()
+Received updates: (Update(message=Message(channel_chat_created=False, chat=Chat(first_name='Gino', id=10792947, last_name='Gan', type=<ChatType.PRIVATE>, username='Gangio75'), date=datetime.datetime(2025, 2, 28, 10, 56, 9, tzinfo=datetime.timezone.utc), delete_chat_photo=False, entities=(MessageEntity(length=140, offset=0, type=<MessageEntityType.URL>),), from_user=User(first_name='Gino', id=10792947, is_bot=False, language_code='it', last_name='Gan', username='Gangio75'), group_chat_created=False, link_preview_options=LinkPreviewOptions(url='https://www.amazon.it/dp/B0DGLXK3B9?tag=tomsguides-21&linkCode=ogi&th=1&psc=1&ascsubtag=12154_migliori-stampanti-economiche-getto-inchiostro'), message_id=55, supergroup_chat_created=False, text='https://www.amazon.it/dp/B0DGLXK3B9?tag=tomsguides-21&linkCode=ogi&th=1&psc=1&ascsubtag=12154_migliori-stampanti-economiche-getto-inchiostro'), update_id=548801432),)
+Processing update with ID: 548801432
+Received message: https://www.amazon.it/dp/B0DGLXK3B9?tag=tomsguides-21&linkCode=ogi&th=1&psc=1&ascsubtag=12154_migliori-stampanti-economiche-getto-inchiostro from chat ID: 10792947
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/bot.py", line 185, in main
+    updates = await bot.get_updates(offset=offset, timeout=30)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/telegram/_bot.py", line 4480, in get_updates
+    await self._post(
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/telegram/_bot.py", line 619, in _post
+    return await self._do_post(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/telegram/_bot.py", line 648, in _do_post
+    result = await request.post(
+             ^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 202, in post
+    result = await self._request_wrapper(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/telegram/request/_baserequest.py", line 334, in _request_wrapper
+    code, payload = await self.do_request(
+                    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/telegram/request/_httpxrequest.py", line 293, in do_request
+    res = await self._client.request(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 103, in handle_async_request
+    return await self._connection.handle_async_request(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpcore/_async/http11.py", line 136, in handle_async_request
+    raise exc
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpcore/_async/http11.py", line 106, in handle_async_request
+    ) = await self._receive_response_headers(**kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpcore/_async/http11.py", line 177, in _receive_response_headers
+    event = await self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
+    data = await self._network_stream.read(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 35, in read
+    return await self._stream.receive(max_bytes=max_bytes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/anyio/streams/tls.py", line 204, in receive
+    data = await self._call_sslobject_method(self._ssl_object.read, max_bytes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/anyio/streams/tls.py", line 147, in _call_sslobject_method
+    data = await self.transport_stream.receive()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hal9ooo/RefRewiter/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 1246, in receive
+    await self._protocol.read_event.wait()
+  File "/usr/lib/python3.12/asyncio/locks.py", line 212, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/hal9ooo/RefRewiter/bot.py", line 211, in <module>
+    asyncio.run(main())
+  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt

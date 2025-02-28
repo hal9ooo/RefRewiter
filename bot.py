@@ -20,6 +20,9 @@ DATABASE_FILE = "amazon_links.db"
 
 def shorten_url(url):
     """Shortens a URL using the TinyURL API."""
+    # Ensure the referral tag is present before shortening
+    if "tag=" not in url:
+        url += f"&tag={REFERRAL_TAG}"
     api_url = f"http://tinyurl.com/api-create.php?url={url}"
     try:
         response = requests.get(api_url)
@@ -29,28 +32,42 @@ def shorten_url(url):
         print(f"Error shortening URL: {e}")
         return url  # Return original URL on error
 
+import time
+
 def modify_amazon_link(link):
     """
     Opens the Amazon link, replaces the referral tag, and returns the modified link.
+    Implements a retry mechanism with exponential backoff.
     """
-    try:
-        response = requests.get(link)
-        response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
-        # Find the original URL (handle different redirect methods)
-        original_url = response.url
-        
-        # Use regex to find and replace the referral tag
-        modified_url = re.sub(r"tag=[^&]+", f"tag={REFERRAL_TAG}", original_url)
-        
-        return modified_url
+    retries = 10
+    delay = 1
+    for i in range(retries):
+        try:
+            response = requests.get(link)
+            response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+            # Find the original URL (handle different redirect methods)
+            original_url = response.url
+            # Extract the base URL (up to the '?')
+            base_url = original_url.split("?")[0]
+            
+            # Check if the base URL already has query parameters
+            if "?" in original_url:
+                modified_url = f"{base_url}&tag={REFERRAL_TAG}"
+            else:
+                modified_url = f"{base_url}?tag={REFERRAL_TAG}"
+            
+            return modified_url
 
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching URL: {e}")
-        return None
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
-
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching URL: {e}, retry {i+1}/{retries}")
+            if i == retries - 1:
+                print(f"Max retries reached, could not process the Amazon link: {link}")
+                return None
+            time.sleep(delay)
+            delay = min(delay * 2, 60)  # Exponential backoff, max 60 seconds
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
 def extract_asin(url):
     """Extracts the ASIN from an Amazon URL."""
     asin_pattern = r"/dp/([A-Z0-9]{10})|/gp/product/([A-Z0-9]{10})"
@@ -120,14 +137,16 @@ async def process_message(bot: Bot, text: str, chat_id: int):
     logging.info(f"Received message: {text} from chat ID: {chat_id}")
     print(f"Received message: {text} from chat ID: {chat_id}")
 
-    # Regex to find Amazon shortened links (e.g., amzn.to/xxxx)
-    amazon_link_pattern = r"https?:\/\/amzn\.to\/[a-zA-Z0-9]+"
+    # Regex to find Amazon links (shortened and non-shortened)
+    amazon_link_pattern = r"https?:\/\/(?:amzn\.to\/[a-zA-Z0-9]+|(?:www\.)?amazon\.(?:com|co\.uk|de|fr|es|it)\/.*\/dp\/[A-Z0-9]{10}.*)"
     
     amazon_links = re.findall(amazon_link_pattern, text)
+    logging.info(f"Found Amazon links: {amazon_links}")
 
     modified_text = text  # Start with the original text
     
     for link in amazon_links:
+        logging.info(f"Processing Amazon link: {link}")
         modified_link = modify_amazon_link(link)
         if modified_link:
             shortened_link = shorten_url(modified_link)  # Shorten the modified link

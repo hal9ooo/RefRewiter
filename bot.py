@@ -1,5 +1,6 @@
-import telegram
-from telegram.ext import Updater, MessageHandler, Filters
+from telegram import Bot, Update
+from telegram.ext import ContextTypes
+import asyncio
 import requests
 from bs4 import BeautifulSoup
 import os
@@ -9,7 +10,7 @@ import sqlite3
 from datetime import datetime
 
 # Telegram Bot API Token (replace with your actual token)
-BOT_TOKEN = "your_api_token_here"  # Placeholder token
+BOT_TOKEN = "7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE"  # Placeholder token
 
 # Your Amazon Referral Tag
 REFERRAL_TAG = "your_referral_tag"
@@ -107,12 +108,18 @@ def store_link_data(asin, original_url, modified_url):
             conn.close()
 
 
-def handle_message(update, context):
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+async def process_message(bot: Bot, text: str, chat_id: int):
     """
-    Handles incoming messages, identifies Amazon links, and replaces them with shortened, modified links in the original message.
+    Processes a message, identifies Amazon links, and sends back the modified message.
     """
-    text = update.message.text
-    
+    logging.info(f"Received message: {text} from chat ID: {chat_id}")
+    print(f"Received message: {text} from chat ID: {chat_id}")
+
     # Regex to find Amazon shortened links (e.g., amzn.to/xxxx)
     amazon_link_pattern = r"https?:\/\/amzn\.to\/[a-zA-Z0-9]+"
     
@@ -136,25 +143,50 @@ def handle_message(update, context):
         else:
             print(f"Could not process the Amazon link: {link}") # Log the error
 
-    update.message.reply_text(modified_text)  # Send the modified message
+    # Only send a response if the text was modified
+    if modified_text != text:
+        await bot.send_message(chat_id=chat_id, text=modified_text)
 
-
-def main():
+async def main():
     """
     Main function to start the bot.
     """
-    updater = Updater(BOT_TOKEN, use_context=True)
-    dp = updater.dispatcher
-
-    # Add message handler to process text messages
-    dp.add_handler(MessageHandler(Filters.text, handle_message))
-
-    # Start the bot
-    updater.start_polling()
-
-    # Run the bot until you press Ctrl-C
-    updater.idle()
+    bot = Bot(token=BOT_TOKEN)
+    
+    # Get bot info to verify the token is valid
+    print("Starting bot...")
+    bot_info = await bot.get_me()
+    print(f"Bot started as @{bot_info.username}")
+    
+    # Simple polling mechanism
+    offset = 0
+    
+    try:
+        while True:
+            updates = await bot.get_updates(offset=offset, timeout=30)
+            print(f"Received updates: {updates}")
+             
+            for update in updates:
+                print(f"Processing update with ID: {update.update_id}")
+                offset = update.update_id + 1
+                
+                # Process only text messages
+                if update.message and update.message.text:
+                    await process_message(
+                        bot,
+                        update.message.text,
+                        update.message.chat_id
+                    )
+                else:
+                    print("Received non-text message, skipping...")
+            # Small delay to prevent high CPU usage
+            await asyncio.sleep(1)
+    except KeyboardInterrupt:
+        print("Bot stopped by user")
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 if __name__ == '__main__':
-    main()
+    import asyncio
+    asyncio.run(main())

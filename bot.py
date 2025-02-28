@@ -13,7 +13,7 @@ from datetime import datetime
 BOT_TOKEN = "7433012661:AAEEpp3NEoa6SKO3YhPNXBjAvbMB4EsgHDE"  # Placeholder token
 
 # Your Amazon Referral Tag
-REFERRAL_TAG = "your_referral_tag"
+REFERRAL_TAG = "homepetsoff07-21"
 
 # Database file
 DATABASE_FILE = "amazon_links.db"
